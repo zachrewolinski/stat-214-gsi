@@ -8,7 +8,7 @@ Questions and discussions between students can be posted on Ed Discussions. That
 
 Please think carefully before asking questions specifically about the projects. For example, questions concerning how to do something specific in Python (e.g. "how do I format the data for linear regression in sklearn?") are fine, but questions asking what other people did for their analysis are not (e.g. "what are some findings that people have come across in the TBI project"). Questions asking about clarifications are fine.
 
-# The lab assignments
+# The Lab Assignments
 
 There will be 3 lab reports throughout the semester (2 labs and 1 final project). These reports are a *big deal*. It is in completing these reports that the real learning happens. You will get to apply what you've learned in the lectures and labs to real datasets (with real issues). You will also learn to develop a narrative that reports your scientific findings as accurately and accessibly as possible: you will learn to tell a story with your analysis.
 
