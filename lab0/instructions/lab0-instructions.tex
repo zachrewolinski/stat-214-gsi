@@ -1,0 +1,64 @@
+\documentclass[letterpaper,12pt]{article}
+% reduce margins
+\usepackage[margin=1in]{geometry}
+% remove indent
+\setlength\parindent{0pt}
+\setlength{\parskip}{1em}
+
+\usepackage{verbatim}
+
+\title{Lab 0}
+\author{Anthony Ozerov}
+
+\begin{document}
+
+\maketitle
+
+This lab is based on materials by Chengzhong Ye, Theo Saarinen, Omer Ronen, James Duncan, Tiffany Tang, Zoe Vernon, Rebecca Barter, Yuval Benjamini, Jessica Li, Adam Bloniarz, and Ryan Giordano.
+
+Note: This lab is not representative of the labs that you will receive in this class. Future labs will be significantly more open-ended and difficult.
+
+\textbf{This lab will not be for a grade}; you do not have to complete the lab if you don't want to, \textbf{but you do need to submit *something* on GitHub} (even if it is a blank \texttt{lab0.tex} and \texttt{lab0.pdf} file). This lab is an opportunity to make sure that you know how to submit your assignments, and for you to learn a little bit of Git/GitHub, Python, and various tools like \texttt{conda}.
+
+Recall that instructions pertaining to \textit{all} labs are in the \texttt{lab-instructions.pdf} file in the \texttt{disc/week1} directory of the \texttt{stat-215-a} repository. You should have already read this document before starting this lab.
+
+\section{Analysis Instructions}
+
+Write up a report conducting the following analysis. As described in the general lab instructions, the report can either be contained in a Jupyter notebook (\texttt{code/lab0.ipynb}) or a \LaTeX\ document (\texttt{report/lab0.tex}). In either case, you should convert the final product to a PDF (\texttt{report/lab0.pdf}).
+
+This walkthrough will be a quick overview of important functions/tools that you may find useful in future labs. If you are not familiar with Python (especially pandas, matplotlib, and scikit-learn), this lab is highly recommended.
+
+\subsection{Loading the data}
+\begin{enumerate}
+\item If you have not set up your \texttt{stat-215-a} GitHub repo yet, wait until the first lab session (August 30) to do so.
+\item Make sure to pull the repo before doing anything! I may have updated something.
+\item Open a Python notebook (either in Jupyter Lab or VSCode) and load \texttt{USArrests.csv} and \texttt{stateCoord.csv} using Pandas. (see \texttt{pd.read\_csv())}
+\end{enumerate}
+
+\subsection{Manipulating the data}
+\begin{enumerate}
+    \item Merge the two datasets together into a single DataFrame named \texttt{arrests}. Hint: see \texttt{pd.merge}. Check that this worked correctly.
+\end{enumerate}
+\subsection{Visualizing the data}
+\begin{enumerate}
+    \item Plot ``Murder'' vs ``Assault'' using \texttt{matplotlib} (see \texttt{plt.scatter}). What do you see?
+    \item Plot ``Rape'' vs ``urban population'' using \texttt{matplotlib}. There should be an outlier. Can you mark the outlier with a different color?
+    \item Re-make these plots with the state names instead of the points (use \texttt{plt.annotate}). Do you notice anything interesting?
+    \item Challenge: Plot a map of the US colouring each state by its ``Murder'' rate. Check out \texttt{geopandas}.
+\end{enumerate}
+\subsection{Regression}
+You can fit a linear regression using \texttt{sklearn.linear\_model.LinearRegression} (or manually if you'd prefer!).
+\begin{enumerate}
+    \item Remove the ``Murder'' and ``Assault'' columns from the \texttt{arrests} DataFrame (you can index a DataFrame with multiple column names!)
+    \item Fit a linear regression of ``UrbanPop'' on ``Rape''.
+    \item Plot predicted values versus the residuals. Do you see any trends?
+    \item Replot ``Rape'' vs ``UrbanPop'' and draw a blue line with the predicted responses.
+    \item Now refit without the outlier and add a red line on the same plot.
+    \item Compare the lines. Are the linear responses a good description of the data?
+    \item Make a publishable graph. Add a header (\texttt{plt.title}), axis labels (\texttt{plt.xlabel}, \texttt{plt.ylabel}), add a legend (\texttt{plt.legend}), and generally try to make the plot look nice.
+\end{enumerate}
+
+\subsection{Challenge}
+Try making some of the plots in R instead, using the methods suggested in \texttt{lab-instructions.pdf}
+
+\end{document}
