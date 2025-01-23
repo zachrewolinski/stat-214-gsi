@@ -1,6 +1,6 @@
 # STAT 214
 
-This is the GitHub repository for STAT 214, Spring 2025.
+This is the GitHub repository for receiving lab assignments in STAT 214, Spring 2025.
 
 Thanks to Anthony Ozerov, Chengzhong Ye, Theo Saarinen, Omer Ronen, James Duncan, Tiffany Tang, Zoe Vernon, Rebecca Barter, and other past STAT 215A GSI's for sharing their material with us. This document was originally written by Rebecca for STAT 215A in the Fall of 2017, has been slightly modified in subsequent years, and has been significantly modified for STAT 214.
 
