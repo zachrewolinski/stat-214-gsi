@@ -1,0 +1,300 @@
+\documentclass[letterpaper,12pt]{article}
+% reduce margins
+\usepackage[margin=0.5in]{geometry}
+% remove indent
+\setlength\parindent{0pt}
+\setlength{\parskip}{1em}
+% reduce toc spacing
+\usepackage{tocloft}
+\setlength{\cftbeforesecskip}{0.5em}
+% make toc show subsubsections
+\setcounter{tocdepth}{3}
+% remove section numbering
+\setcounter{secnumdepth}{1}
+
+% reduce section, subsection, etc spacing
+\usepackage{titlesec}
+\titlespacing*{\section}{0pt}{0\baselineskip}{0\baselineskip}
+\titlespacing*{\subsection}{0pt}{0\baselineskip}{0\baselineskip}
+\titlespacing*{\subsubsection}{0pt}{0\baselineskip}{0\baselineskip}
+
+%reduce list spacing
+\usepackage{enumitem}
+\setlist{nosep}
+
+\usepackage[hidelinks]{hyperref}
+
+\usepackage{verbatim}
+
+\title{STAT 214 General Lab Instructions\vspace{-1em}}
+\author{Zach Rewolinski}
+
+\begin{document}
+
+\maketitle
+
+These are the \textbf{general} lab instructions, applying to all STAT 214 labs. Each lab will also have lab-specific instructions.
+
+\tableofcontents
+
+These instructions are based on previous lab materials by Anthony Ozerov, Chengzhong Ye, Theo Saarinen, Omer Ronen, James Duncan, Tiffany Tang, Zoe Vernon, Rebecca Barter, Yuval Benjamini, Jessica Li, Adam Bloniarz, and Ryan Giordano.
+
+This is the first time STAT 214 is being taught, so these instructions have been heavily adapted from previous years. They are provisional and will likely be modified throughout the course as we progress through the labs and get feedback.
+
+\section{Prequisites}
+\subsection{Unix environment}
+\textbf{It is essential that you use a Unix environment for this class}. MacOS and Linux are both Unix environments. If you are using Windows, I \textit{highly recommend} installing Windows Subsystem for Linux (WSL) (if you haven't already) and doing everything there. This will give you access to a Unix environment on your Windows machine. If you would like to install WSL, here some resources:
+\begin{itemize}
+    \item Installing WSL: \url{https://learn.microsoft.com/en-us/windows/wsl/install}
+    \item Using VSCode on Windows with your WSL setup: \url{https://code.visualstudio.com/docs/remote/wsl}
+\end{itemize}
+In principle, you don't \textit{have} to use a Unix environment. But using one will make things easier. And if something isn't working in your non-Unix environment, I likely won't be able to help you.
+\subsection{Set up your stat-214 repository}
+See the Week 1 discussion section slides for instructions. Your lab submission will be made through your private \texttt{stat-214} repository.
+\subsection{Obtain lab materials}
+Copy over the lab materials from the \texttt{stat-214-gsi} repository to your own repository \texttt{stat-214}. i.e.~the \texttt{stat-214-gsi/labX} directory should be copied to \texttt{stat-214/labX}. \textbf{Do not} do the lab in some other folder on your computer and copy it to your repo at the last moment. It is easiest to just do the whole lab within the repository directory.
+
+\section{Environment setup}
+
+\subsection{Conda Installation}
+If you haven't already, install \texttt{miniconda} or \texttt{conda} (don't install Anaconda).
+
+\subsection{Making/updating an environment from the lab's environment.yaml file}
+Set up your 214 environment using the provided \texttt{labX/code/environment.yaml}. First, take a look at the file to see how it is formatted; it is just a plaintext list of dependencies. Navigate to your \texttt{labX} directory in your own \texttt{stat-214} repo. If you don't yet have an environment named ``stat214'' (you can check using \texttt{conda env list}), run this command:
+\begin{verbatim}
+conda env create -f code/environment.yaml
+\end{verbatim}
+This will create a new environment named ``stat214'' with all of the packages you need. If you already have a stat214 environment, you can update it with:
+\begin{verbatim}
+conda env update -f code/environment.yaml
+\end{verbatim}
+This will update your environment to add the packages listed in the \texttt{environment.yaml} file.
+
+\subsection{Checking that your environment works}
+Now let's check that the environment works:
+\begin{enumerate}
+    \item Enter your environment using \texttt{conda activate stat214}.
+    \item Run the command \texttt{jupyter lab} to create a Jupyter Lab server
+    \item Open a new notebook
+    \item Run \texttt{import sys} then \texttt{print sys.executable}. The output should be a Python executable associated with your \texttt{214} environment, and should end in \texttt{214/bin/python}.
+\end{enumerate}
+\subsection{Making a conda environment for R}
+If you would like to also use \texttt{R} (e.g. for figures), you can install it as well. These days you can install \texttt{R} and \texttt{Rstudio} using \texttt{conda}. You don't have to, but I would recommend making a separate conda environment for \texttt{R} to avoid any conflicts. There is also an \texttt{code/environment-r.yaml} file that you can use to set up an \texttt{R} environment. You can create a new \texttt{stat214-r} environment with:
+\begin{verbatim}
+conda env create -f code/environment-r.yaml
+\end{verbatim}
+If you run \texttt{conda activate stat214-r} you will be able to use \texttt{R} from the command-line. If you install \texttt{jupyterlab} in this environment (\texttt{pip install jupyterlab}), you'll be able to use it in Jupyter notebooks too. The environment also contains an installation of \texttt{Rstudio}, which you can run with \texttt{rstudio} from the command line while you are in the \texttt{stat214-r} environment.
+
+\subsection{MacOS issues}
+\textit{Note:} Recent Apple devices use an arm64 architecture as opposed to an x86\_64 architecture. Many conda packages are not compiled for arm64, so you may run into issues when installing packages. You may be able to get around this by running \texttt{conda config --env --set subdir osx-64} after creating a new, empty conda environment. e.g.~you might be able to do:
+\begin{verbatim}
+conda create -n stat214
+conda activate stat214
+conda config --env --set subdir osx-64
+conda env update -f code/environment.yaml
+\end{verbatim}
+
+\section{Do the lab}
+Come to OH if you have questions, or ask on Ed. The different labs will have specific requirements, in terms of PCS documentation, on what the report needs to contain.
+
+\subsection{General report-writing guidelines}
+The assignments require at least two full weeks of work to satisfactorily complete, which requires a very early start.\ldots For the data labs, each student will produce a \textbf{12-page (maximum)} report presenting a narrative that connects the motivating
+questions, the analysis conducted and the conclusions drawn. The labs will be completed in Python
+(optionally some parts in R, especially for visualization). The reports will be made using Jupyter
+Notebooks or pure \LaTeX\ and the final pdf output should not contain any code whatsoever.''
+
+The first lab will be done individually, while the second lab and final project will be done in groups. The goal of writing the lab report is not only to gain data analysis
+experience but is also an exercise in communication. We ask that particular attention is given to
+the writing of the report, as your peers will be reading them: so that the students can learn from
+one another, the labs will be peer-reviewed. Each student will review 2-3 labs from their peers, and
+will provide feedback and a grade based on several criteria including clarity of writing, validity of
+analysis and informativeness of visualizations. The final grade of each lab will be decided by the
+GSI who will use the student grades as a guide.
+
+Also take note of these guidelines:
+\begin{itemize}
+    \item You must make an effort to communicate effectively. Think as if you are writing a blog post or an informal journal article.
+    \item The data from each lab comes from an existing research paper, which will be given to you. You must also make an effort to incorporate domain information and knowledge in the writeup to give the report some context. For example, it is good habit to explain in the introduction why your problem is important within the domain, to describe any connections between the statistical models/algorithms and the true phenomenon at hand, and to conclude with a discussion of the impacts of the results within the domain context. Ideally, domain knowledge should be incorporated at all stages of the data science pipeline.
+    \item Favour simplicity over complexity. It is much more important to be thorough and to communicate effectively than to come up with some super fancy modeling idea that no one understands. If a super fancy is needed or justified, then feel free to go for it.
+\end{itemize}
+
+\subsection{Figure guidelines}
+Keep in mind that there are two types of visualization: \textit{exploratory} and \textit{explanatory}. Exploratory visualizations are graphics that you produce to help \textit{you} understand the data, whereas explanatory visualizations are final versions of a small subset of these figures that you produce to explain to \textit{other people} what is in the data. Typically you will produce many, many exploratory plots and only a few key explanatory plots that answer specific questions. Choose your explanatory plots carefully, and ask the following question of every figure in your report: ``Does this figure add anything? Is my story strictly worse when I remove it?'' If the answer to either question is ``no'', then you should remove the figure. Just because you spent a lot of time making a really pretty figure, doesn't mean that it adds anything to your story. There have been many times in my life where I have spent an hour or two making a really awesome plot only to decide the next day that it is actually fairly irrelevant to my main points and removing it.
+
+% Look through the Week 3 slides from discussion section to recall our discussion on the qualities of a good figure and how to make one!
+
+\subsection{Jupyter notebook or LaTeX}
+
+Your lab report can be written in either a Jupyter notebook (\texttt{labX.ipynb}) or a \LaTeX\ document (\texttt{labX.tex}). If you are more industry-minded (or adventurous!) I recommend trying in Jupyter notebooks, and if you are more academia minded I recommend trying in \LaTeX. In either case, you should convert the final product to a PDF (\texttt{report/lab0.pdf}).
+
+If you would like, you can write your report as \texttt{.qmd} instead of \texttt{.ipynb} or \texttt{.tex}, or even as MyST markdown. But I won't be able to help you if you have problems! Please don't use \texttt{.Rmd}.
+
+\subsubsection{LaTeX instructions}
+If you do the lab in \LaTeX, you can use Overleaf (especially for group labs), but for the individual labs I recommend installing \LaTeX\ locally and editing your \texttt{.tex} files locally. This just makes it easier to work with figures generated by your code (if you re-run some code and get a new figure, you can just recompile your \texttt{.tex} file to see it in your document). Feel free to ask me about setting up \LaTeX\ on your computer.
+
+\subsubsection{Jupyter notebook instructions}
+If you do the lab in Jupyter notebooks, here are some useful commands (to be run from your Unix command-line) for exporting them to PDF. The first converts a notebook to a pdf without running it again, and the second converts a notebook to a pdf after re-running it. You will need to put the pdf output in the \texttt{report} directory of your lab folder manually unless you can figure out some other wizardry.
+\begin{verbatim}
+quarto render labX.ipynb --to pdf
+quarto render labX.ipynb --to pdf --execute
+\end{verbatim}
+\texttt{quarto} is a software which, among other things, can convert Jupyter notebooks to much nicer PDFs than Jupyter's built-in converter. You can install it in your \texttt{stat214} environment with \texttt{conda install -c conda-forge quarto}, or install it in some other way on your system. NOTE: if quarto is used to execute a notebook, it must be run from within the appropriate Conda environment.
+
+Quarto also has a lot of tools for customizing the PDF output, (defining a title, adding figure captions, etc.) which are not otherwise available in Jupyter. You can read more about using Quarto with ipynb files here: \url{https://quarto.org/docs/tools/jupyter-lab.html}, and here: \url{https://quarto.org/docs/get-started/authoring/jupyter.html}.
+
+I think converting a Jupyter notebook to PDF (using Quarto or otherwise) requires you to have a local \LaTeX\ installation. I think quarto can install a small \LaTeX\ installation for itself with \texttt{quarto install tinytex}. If you have trouble with this, please talk with me.
+
+If you have interactive elements in your Jupyter notebook, feel free to also export it to HTML (\texttt{quarto render labX.ipynb --execute}) and include that with your report, so I can play around with it!
+
+% There is a small example notebook in \texttt{stat-215-a-gsi/disc/week1} which you can look at to see how to set up a .ipynb for use with Quarto and also display figures when rendering with Quarto.
+
+\subsubsection{No code in PDF report!}
+In any case, \textbf{Your PDF report must not contain any code}. For converting with Quarto, here is an example first-block in your .ipynb (which should be a ``Raw'' block as opposed to ``Python'' or ``Markdown'') which defines a title and prevents code from being displayed in the PDF:
+\begin{verbatim}
+---
+title: "STAT 214 Lab X"
+execute:
+  echo: false
+---
+\end{verbatim}
+To clarify, it is okay if your \texttt{.ipynb} contains code (it would make sense if it does). The key is that the code should not be displayed in the final PDF report, which we can accomplish by just controlling how Quarto does the rendering.
+
+\subsection{Coding language}
+\subsubsection{Primarily in Python!}
+In general, \textbf{labs must be completed primarily in Python}. However, you are welcome to do components of your labs in R, especially visualization, if you prefer. Using the right tools for the right tasks is an important skill. For most things in this class, Python is the right tool.
+
+\subsubsection{Interplay between R and Python}
+If you do use both, you should set up the interplay between them cleanly. In general, to avoid confusing bugs and dependency issues, it is good to keep R and Python code completely separate, only passing data between them through intermediate files (e.g. .csv). For example, you can easily make R plots of your Python analyses:
+\begin{itemize}
+    \item Export data from Python to a CSV file
+    \item Load it in R, and possibly reshape it somehow (see \texttt{dplyr})
+    \item Use \texttt{ggplot} (or other plotting methods) to make a figure.
+    \item Save the figure in the \texttt{figs} directory of your lab.
+\end{itemize}
+Note that your final R code should be able to run as a script, saving figures on its own in appropriate directories. You \textbf{cannot} just load the data in a .Rmd file, manually run cells, and save the plots manually when they appear. See this stackoverflow post for how to save R figures: \url{https://stackoverflow.com/questions/7144118/how-can-i-save-a-plot-as-an-image-on-the-disk}
+\subsubsection{Loading figures created in R}
+If you are using a Jupyter notebook for the report, you can use the following code to display the figure you made in R:
+\begin{verbatim}
+from IPython.display import Image
+Image(filename='../figs/plot.png')
+\end{verbatim}
+If you are using a \LaTeX\ document for your report, you can include the figure using the following code:
+\begin{verbatim}
+\usepackage{graphicx}
+...
+\begin{document}
+...
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{../figs/plot.png}
+\end{figure}
+\end{verbatim}
+
+\subsection{Coding requirements}
+
+\subsubsection{LLM usage rules}
+Each lab will describe the policy on using LLMs for coding the lab.
+
+\subsubsection{Style requirements}
+Your code should not be ugly. I recommend following the Google Python Style Guide: \url{https://google.github.io/styleguide/pyguide.html}. Pay special attention to guidelines for the names of variables, functions, and classes. Variable names in Python should be in snake\_case, not CamelCase! You don't have to follow the style guide super strictly, but you should write clean, readable code, and the Google one is a good guide to do so. There are also many tools to auto-format the whitespace of your code to make it look nice, like \texttt{black}.
+
+\subsubsection{Documentation requirements: comments and docstrings}
+Your code should be well-commented.
+\begin{itemize}
+  \item There should be comments throughout which explain what is going on.
+  \item Use docstrings for functions and classes. Feel free to follow any style guide for this.
+  \item A PCS documentation file, described in Ch. 3 of Yu \& Barter, should be created.
+\end{itemize}
+(Hint: LLMs are pretty good at documenting code you've written!)
+
+\section{Submission Requirements}
+
+\subsection{Report length}
+The report should be a maximum of 12 pages, including figures, tables, etc.~and excluding bibliography.
+
+\subsection{Lab folder structure}
+
+Your \texttt{labX} folder should have the following structure:
+\begin{verbatim}
+labX/
+    code/
+        run.sh
+        environment.yaml
+        environment-r.yaml (optional)
+        (labX.ipynb)
+        (some_script.py)
+        (some_other_script.py)
+        (some_exploratory_notebook.ipynb)
+        ...
+    data/
+    documents/
+    figs/
+    other/
+    report/
+        (labX.tex)
+        labX.pdf
+\end{verbatim}
+\begin{itemize}
+    \item \texttt{code} should contain all of your code, including any Jupyter notebooks.
+    \item  \texttt{data} should contain any data that you use, including data which we give you and intermediate outputs from your code. \textbf{Do not commit data to your repo}. When testing your code, I will put the data in \texttt{stat-214-gsi/labX/data} into your \texttt{stat-214/labX/data}.
+    \item \texttt{documents} should contain any relevant documents, including papers which we give you or which you use.
+    \item \texttt{figs} should contain any figures that you generate which are included in a LaTeX report.
+    \item \texttt{other} should contain any other relevant files.
+    \item \texttt{report} should contain your lab report, in both \texttt{.tex} and \texttt{.pdf} formats. Any figures in your report should be pulled from the \texttt{figs} folder.
+\end{itemize}
+If you didn't use them, it is okay if the \texttt{documents}, \texttt{figs}, and \texttt{other} folders are not present.
+
+\subsection{No name or identifying information}
+Your lab should not contain any identifying information. However I recommend in this class that you also make versions with your name, so you can show them to other people (employers?) later.
+
+\subsection{Reproducibility}
+Your results need to be reproducible. That means I should be able to easily run your code and produce all of the figures/information needed to make your report. \textbf{You will be graded on reproducibility}. Below are some specific requirements which ensure I can reproduce your environment and run your code in the correct order. \textbf{I will not grade harshly on environment.yaml and run.sh}, they are just there to make sure I can reproduce your results using your code.
+\subsubsection{environment.yaml}
+\texttt{code/environment.yaml} should be a yaml file listing the dependencies of your code. I have provided one for you to start with, but make sure to add to it any dependencies you install. Any dependencies you installed with \texttt{conda} should be added to the list under \texttt{dependencies}, and any dependencies you installed with \texttt{pip} should be added to the sublist under \texttt{pip}. Please do this so that I can recreate your environment and run your code without any issues!
+
+You can test that your environment works to run your code by making and activating a new test environment, then running your code within it:
+\begin{verbatim}
+conda env create --name stat214-test -f environment.yaml
+conda activate stat214-test
+\end{verbatim}
+You can do likewise with your \texttt{stat214-r} environment and \texttt{environment-r.yaml} if you are using one.
+
+\subsubsection{run.sh}
+\texttt{run.sh} should be a shell script which runs all of the code needed to generate your results. It can be something as simple as:
+\begin{verbatim}
+#!/bin/bash
+conda activate stat214
+python main.py
+\end{verbatim}
+This will work if you just have a \texttt{main.py} script which produces all of your results, which are then loaded in a .tex file to make your report. If you are using a Jupyter notebook for your report and running the notebook produces all of the intermediate results and figures you need, your \texttt{run.sh} could look like:
+\begin{verbatim}
+#!/bin/bash
+conda activate stat214
+jupyter nbconvert --to notebook --execute --inplace labX.ipynb
+\end{verbatim}
+The final command here is equivalent to opening the notebook in Jupyter Lab, hitting ``Restart Kernel and Run All Cells'', and saving the notebook. The command runs all of the cells in the notebook in order, and saves the output in the notebook itself.
+
+You could also have something more complicated like this, if you are using a mix of Python and R and have some scripts producing intermediate data/results:
+\begin{verbatim}
+#!/bin/bash
+
+conda activate stat214            # activates your stat214 environment
+python process_data.py            # runs your Python data processing script
+python main.py                    # runs some main script which produces some outputs
+conda deactivate                  # deactivates your stat214 environment
+
+conda activate stat214-r          # activates your stat214-r environment
+Rscript --no-save make_figures.R  # runs an R script to make some figures
+conda deactivate                  # deactivates your stat214-r environment
+
+conda activate stat214            # reactivates your stat214 environment
+# executes a Jupyter notebook containing some analysis
+jupyter nbconvert --to notebook --execute --inplace labX.ipynb
+\end{verbatim}
+Don't worry about including code to make a PDF of your report in \texttt{run.sh}.
+
+Again, I will not grade harshly on \textbf{run.sh}. The most important aspect of it is that it defines what order to run your code in. If you'd like, feel free to also experiment with using a Makefile to define how your code should be run.
+
+Note: you may have an issue with running \texttt{run.sh}, seeing an error like \texttt{CondaError:  Run `conda init' before `conda activate'}. Due to some arcane Conda details, shell scripts containing \texttt{conda activate} may not work when you try running them directly with \texttt{bash run.sh} or \texttt{./run.sh} depending on your particular setup. To get around this, try running it with \texttt{source run.sh} or \texttt{bash -i run.sh}  or \texttt{zsh -i run.sh}. If for whatever reason you cannot get it to work, and you are sure you can run all of the commands in \texttt{run.sh} manually in the appropriate order, that is okay, as I should be able to run it myself.
+
+\end{document}
