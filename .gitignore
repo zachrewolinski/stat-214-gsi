@@ -1,0 +1,18 @@
+# Kindly borrowed from Anthony Ozerov's stat-215-a-gsi repository
+*.log
+*.aux
+*.bbl
+*.out
+
+/lab_final/
+
+.idea
+
+/scripts/
+/gsi/
+
+.DS_Store
+
+__pycache__
+
+.ipynb_checkpoints
