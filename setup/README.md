@@ -2,7 +2,7 @@
 
 ## Setup
 
-Your report and code will be submitted via GitHub. The following instructions will show you how to set up your GitHub account and configure a repository so that you can submit your assignments. This workflow is shamelessly copied (with slight modifications) from Chris Paciorek and Jarod Millman's STAT243 class in 2014.
+Your report and code will be submitted via GitHub. The following instructions will show you how to set up your GitHub account and configure a repository so that you can submit your assignments. This workflow is shamelessly copied (with moderate modifications) from Chris Paciorek and Jarod Millman's STAT243 class in 2014.
 
 1. If you are not on a Unix system (e.g. Linux or MacOS or WSL), get on one. Ask me how or refer to the instructions previously given by the GSI.
 
