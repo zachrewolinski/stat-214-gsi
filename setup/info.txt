@@ -1,0 +1,5 @@
+name = "Firstname Lastname"
+SID = "0123456789"
+email = "first_last@berkeley.edu"
+github_name = "firstnamelastname"
+
