@@ -1,0 +1,165 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{graphicx}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+
+%make lists tighter
+\usepackage{enumitem}
+\setlist{nolistsep}
+
+%reduce spacing before and after section
+\usepackage{titlesec}
+\titlespacing\section{0pt}{6pt}{0pt}
+
+\title{Lab 1 - PECARN TBI Data, STAT 214, Spring 2025}
+
+% submission must not contain your name
+% but feel free to make a version for yourself with your name on it
+\author{Anonymous}
+
+\begin{document}
+\maketitle
+
+Please use this structure for your report, but you do not have to
+slavishly follow this template. All bullet points are merely suggestions
+and potential points to discuss in your writeup. Your report should be
+no more than 12 pages, including figures. Do not include \emph{any} code
+or code output in your report. Indicate your informal collaborators on
+the assignment, if you had any.
+
+\section{Introduction}\label{introduction}
+
+Things to potentially include in your introduction:
+
+\begin{itemize}
+\item Describe the premise of your exploratory data analysis and put your analysis in the domain context
+\item Explain why studying the TBI data is interesting and/or important
+\item What are the implications of better understanding this data?
+\item What is the purpose of your exploratory data analysis?
+\item Outline what you will be doing in the rest of the report/analysis
+\end{itemize}
+
+
+\section{Data}\label{data}
+
+\begin{itemize}
+\item What is the data that you will be looking at?
+\item Provide a brief overview of the data
+\item How is this data relevant to the problem of interest? In other words, make the link between the data and the domain problem
+\end{itemize}
+
+\subsection{Data Collection}\label{data-collection}
+
+\begin{itemize}
+\item How was the data generated?
+\item Discuss how the measurements of each variable in the data vary
+\end{itemize}
+
+\subsection{Data Cleaning}\label{data-cleaning}
+
+\begin{itemize}
+\item Discuss all inconsistencies, problems, oddities in the data (e.g.~missing data, errors in data, outliers, etc)
+\item What steps did you take to clean the data, and why did you clean the data in that way?
+\item Record your preprocessing steps in a way such that if someone else were to reproduce your analysis, they could easily replicate and understand your preprocessing
+\item You may find it helpful to include relevant plots that help to explain the choices you made when cleaning the data
+\item Be transparent! This allows for others to read your work and make their own educated decisions on how best to preprocess the data.
+\end{itemize}
+
+\subsection{Data Exploration}\label{data-exploration}
+
+\begin{itemize}
+\item The main goal of this section is to give the reader a feel for what the data ``looks like'\,' at a basic level
+\item Think about plots that summarize the data, plots that convey some smaller findings which ultimately motivate your main findings
+\item A good report will tie everything together so that there is a reason for every figure in the story
+\end{itemize}
+
+\section{Findings}\label{findings}
+
+\begin{itemize}
+\item Present three interesting findings and produce a publication quality graphic for each along with a short caption of what each shows.
+\item Don't forget to appropriate label axes, titles
+\item Think carefully about use of color, labeling, shading, transparency, etc.
+\item Also interpret and provide an insightful discussion of what your figures show
+\end{itemize}
+
+\subsection{First finding}\label{first-finding}
+
+Describe it and place a figure here
+
+\subsection{Second finding}\label{second-finding}
+
+Describe it and place a figure here
+
+\subsection{Third finding}\label{third-finding}
+
+Describe it and place a figure here
+
+\subsection{Reality Check}\label{reality-check}
+
+\begin{itemize}
+\item Do a reality check. What reality could you compare your cleaned data to?
+\item Clearly state your assumptions and explain why this reality check is useful.
+\item Does your cleaned data pass the reality check or are there issues? Discuss.
+\end{itemize}
+
+\subsection{Stability Check}\label{stability-check}
+
+Take one of your findings and present a perturbed version. How does this
+affect your finding? Add a before and after plot here.
+
+\section{Modeling}
+
+\subsection{Implementation}
+
+\begin{itemize}
+    \item Discuss any design choices that were made in the modeling stage.
+    \begin{itemize}
+        \item Which algorithms did you use?
+        \item How did you determine hyperparameters? 
+    \end{itemize}
+    \item This should not drone on for too long, but give enough information that your implementation can be replicated by a reader.
+\end{itemize}
+
+\subsection{Interpretability}
+
+Discuss the following:
+\begin{itemize}
+    \item Is your model a simple interpretable form?
+    \item If not, how do you recommend interpreting how it
+obtains the predictions it does?
+\end{itemize}
+If possible, include a figure or schematic that explains how one of your models works.
+
+\subsection{Stability}
+
+Include a figure + discussion which examine how each model's predictions/behavior changes under the data perturbation from Section \ref{stability-check}.
+
+\section{Discussion}\label{discussion}
+
+\begin{itemize}
+\item Did the data size restrict you in any way? Discuss some challenges that you faced as a result of the data size.
+\item Address the three realms: data / reality, algorithms / models, and future data / reality.
+\item Where do the parts of the lab fit into those three realms?
+\item Do you think there is a one-to-one correspondence of the data and reality?
+\item What about reality and data visualization?
+\end{itemize}
+
+
+\section{Conclusion}\label{conclusion}
+
+\begin{itemize}
+\item You should make attempts to connect your findings/analysis back to the domain problem in every section of this report, but here in the conclusion, you can reiterate your main points and provide overarching remarks on the PECARN data as it relates to the domain problem.
+\end{itemize}
+
+\section{Academic honesty statement}\label{academic-honesty-statement}
+
+Please address to Bin.
+
+\section{Collaborators}\label{collaborators}
+
+\section{Bibliography}\label{bibliography}
+
+\end{document}

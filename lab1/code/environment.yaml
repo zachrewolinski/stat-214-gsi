@@ -1,0 +1,11 @@
+name: stat214
+channels:
+  - defaults
+dependencies:
+  - python
+  - pip:
+    - numpy
+    - pandas
+    - matplotlib
+    - scikit-learn
+    - jupyterlab
