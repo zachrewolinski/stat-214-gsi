@@ -40,7 +40,7 @@ Now you will need to set up your Bridges-2 environment for GPU computing. Please
 5. Install an IPython kernel corresponding to your new Conda environment (so that you can use it in Jupyter notebooks): `python -m ipykernel install --user --name env_214 --display-name env_214`
 6. Clean up some conda files to save space: `conda clean --all`, when prompted, just enter `y`.
 
-Hopefully there were no issues in these steps! If you ever seriously mess up your environment, you can just delete it (`conda env remove -n 214`) and re-do these steps.
+Hopefully there were no issues in these steps! If you ever seriously mess up your environment, you can just delete it (`conda env remove -n env_214`) and re-do these steps.
 
 ### Testing
 
