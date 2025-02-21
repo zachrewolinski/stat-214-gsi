@@ -36,8 +36,8 @@ Now you will need to set up your Bridges-2 environment for GPU computing. Please
 1. SSH into a login node: `ssh psc_username@bridges2.psc.edu`
 2. The login environment is pretty bare-bones, and doesn't contain Conda. Load a "module" provided by PSC which contains Conda using `module load anaconda3`.
 3. Create your own Conda environment containing PyTorch using the environment specification we provide: `conda env create -f /ocean/projects/mth240012p/shared/214/environment.yaml`
-4. Activate your new Conda environment: `conda activate 214`
-5. Install an IPython kernel corresponding to your new Conda environment (so that you can use it in Jupyter notebooks): `python -m ipykernel install --user --name 214 --display-name 214`
+4. Activate your new Conda environment: `conda activate env_214`
+5. Install an IPython kernel corresponding to your new Conda environment (so that you can use it in Jupyter notebooks): `python -m ipykernel install --user --name env_214 --display-name env_214`
 6. Clean up some conda files to save space: `conda clean --all`, when prompted, just enter `y`.
 
 Hopefully there were no issues in these steps! If you ever seriously mess up your environment, you can just delete it (`conda env remove -n 214`) and re-do these steps.
@@ -51,7 +51,7 @@ First, check that the PyTorch installation works:
 1. From the login node, create an interactive 10-minute GPU job with `interact -gpu -t 00:10:00`. Wait for your command-line to appear within that job.
 2. Run `nvidia-smi`. It should give you some information about the GPU.
 3. Run `module load anaconda3` so that you can use Conda again.
-4. Activate your 214 environment with `conda activate 214`
+4. Activate your 214 environment with `conda activate env_214`
 5. Create a Python shell by running `python`
 6. Check that you can import PyTorch: `import torch`
 7. Check that PyTorch has some idea of its CUDA version: `print(torch.version.cuda)`. This should print some number like 12.4.
@@ -64,7 +64,7 @@ Now, check that the jupyter kernel was properly installed:
 3. This should feel a little familiar because it's similar to the SCF jupyterhub! Enter `1` for the number of hours, `1` for the number of nodes, `mth240012p` for the account, and **`GPU-shared` for the partition**. You should **never use the `GPU` partition** unless you have a good reason (it has 8x the number of GPUs but also costs us 8x as much!). Enter `--gpus=1` under Extra Slurm Args. Click "Launch"
 4. On the next page, wait for the server to start. It will say "Queued", then maybe "Starting", and then will say "Running". Once the server is running, click the button that says "Connect to Jupyter".
 5. A JupyterLab window will open, similar to what you would see on the SCF jupyterhub. Under "Notebook" you should see an option which says "214". This will create a notebook running the 214 Conda environment. Click on that button.
-6. Check that the notebook is using the right Python executable corresponding to your 214 environment: `import sys` then `print(sys.executable`). The path should be something like `/jet/home/your_username/.conda/envs/214/bin/python`.
+6. Check that the notebook is using the right Python executable corresponding to your 214 environment: `import sys` then `print(sys.executable`). The path should be something like `/jet/home/your_username/.conda/envs/env_214/bin/python`.
 7. Click the blue "+" button, scroll down a bit, and make a Terminal. In the terminal, run `nvidia-smi`. You should see **one** GPU! If you see more or fewer GPUs, you did not put in the right settings in step 3.
 8. Go back to the notebook. Check that you can import PyTorch: `import torch`
 9. Check that PyTorch has some idea of its CUDA version: `print(torch.version.cuda)`. This should print some number like 12.4.
@@ -124,7 +124,7 @@ nvidia-smi
 module load anaconda3
 
 # activate your personal 214 environment
-conda activate 214
+conda activate env_214
 
 # check which python executable you're running
 echo "The python executable in this environment is:"
@@ -181,9 +181,9 @@ Please don't leave your server running idle overnight! And for any actual comput
 
 One of the easiest ways to prevent wasting GPU resources is to follow a better development workflow. Here is our suggested workflow:
 
-1. Develop all code locally (on your own computer) or on the SCF cluster. Never edit any code in an editor on Bridges-2.
-2. Test code locally or on SCF to make sure it runs. If you don't have access to GPU nodes on SCF, you probably can't run your full intended job on a CPU. But you can still test a shorter run, smaller dataset, etc. on a CPU. Make sure that everything loads properly and that your results save in the format you want them.
-3. Once you are confident your code will work as you intend, somehow transfer the code to Bridges-2 (my suggestion: use a private or public github repo; push to it from your laptop/SCF, and pull from Bridges-2).
+1. Develop all code locally (on your own computer). Never edit any code in an editor on Bridges-2.
+2. Test code locally. If you don't have access to GPUs, you probably can't run your full intended job on a CPU. But you can still test a shorter run, smaller dataset, etc. on a CPU. Make sure that everything loads properly and that your results save in the format you want them.
+3. Once you are confident your code will work as you intend, somehow transfer the code to Bridges-2 (my suggestion: use a private or public github repo; push to it from your laptop, and pull from Bridges-2).
 4. Submit the job on Bridges-2.
 
 This way, most of your GPU resource usage will be for actual production runs, rather than testing or debugging. The main possible hangup will be how PyTorch transfers information between CPU and GPU, which won't be tested unless you test on SCF GPUs. But such issues should come up right in the beginning of a run, so you won't use much GPU time. Another benefit of this workflow is that you will only ever have one updated version of your code, and you won't have to deal with moving changes which you made on Bridges-2 back to your local machine.
