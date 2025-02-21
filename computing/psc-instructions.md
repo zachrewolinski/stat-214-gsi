@@ -63,8 +63,8 @@ Now, check that the jupyter kernel was properly installed:
 2. Click on the app "Jupyter Lab: Bridges2"
 3. Enter `1` for the number of hours, `1` for the number of nodes, `mth240012p` for the account, and **`GPU-shared` for the partition**. You should **never use the `GPU` partition** unless you have a good reason (it has 8x the number of GPUs but also costs us 8x as much!). Enter `--gpus=1` under Extra Slurm Args. Click "Launch"
 4. On the next page, wait for the server to start. It will say "Queued", then maybe "Starting", and then will say "Running". Once the server is running, click the button that says "Connect to Jupyter".
-5. A JupyterLab window will open. Under "Notebook" you should see an option which says "214". This will create a notebook running the 214 Conda environment. Click on that button.
-6. Check that the notebook is using the right Python executable corresponding to your 214 environment: `import sys` then `print(sys.executable`). The path should be something like `/jet/home/your_username/.conda/envs/env_214/bin/python`.
+5. A JupyterLab window will open. Under "Notebook" you should see an option which says "env_214". This will create a notebook running the 214 Conda environment. Click on that button.
+6. Check that the notebook is using the right Python executable corresponding to your env_214 environment: `import sys` then `print(sys.executable`). The path should be something like `/jet/home/your_username/.conda/envs/env_214/bin/python`.
 7. Click the blue "+" button, scroll down a bit, and make a Terminal. In the terminal, run `nvidia-smi`. You should see **one** GPU! If you see more or fewer GPUs, you did not put in the right settings in step 3.
 8. Go back to the notebook. Check that you can import PyTorch: `import torch`
 9. Check that PyTorch has some idea of its CUDA version: `print(torch.version.cuda)`. This should print some number like 12.4.
