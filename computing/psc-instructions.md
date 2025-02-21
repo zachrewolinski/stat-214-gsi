@@ -61,9 +61,9 @@ Now, check that the jupyter kernel was properly installed:
 
 1. Log in to the Bridges-2 [web interface](https://ondemand.bridges2.psc.edu)
 2. Click on the app "Jupyter Lab: Bridges2"
-3. This should feel a little familiar because it's similar to the SCF jupyterhub! Enter `1` for the number of hours, `1` for the number of nodes, `mth240012p` for the account, and **`GPU-shared` for the partition**. You should **never use the `GPU` partition** unless you have a good reason (it has 8x the number of GPUs but also costs us 8x as much!). Enter `--gpus=1` under Extra Slurm Args. Click "Launch"
+3. Enter `1` for the number of hours, `1` for the number of nodes, `mth240012p` for the account, and **`GPU-shared` for the partition**. You should **never use the `GPU` partition** unless you have a good reason (it has 8x the number of GPUs but also costs us 8x as much!). Enter `--gpus=1` under Extra Slurm Args. Click "Launch"
 4. On the next page, wait for the server to start. It will say "Queued", then maybe "Starting", and then will say "Running". Once the server is running, click the button that says "Connect to Jupyter".
-5. A JupyterLab window will open, similar to what you would see on the SCF jupyterhub. Under "Notebook" you should see an option which says "214". This will create a notebook running the 214 Conda environment. Click on that button.
+5. A JupyterLab window will open. Under "Notebook" you should see an option which says "214". This will create a notebook running the 214 Conda environment. Click on that button.
 6. Check that the notebook is using the right Python executable corresponding to your 214 environment: `import sys` then `print(sys.executable`). The path should be something like `/jet/home/your_username/.conda/envs/env_214/bin/python`.
 7. Click the blue "+" button, scroll down a bit, and make a Terminal. In the terminal, run `nvidia-smi`. You should see **one** GPU! If you see more or fewer GPUs, you did not put in the right settings in step 3.
 8. Go back to the notebook. Check that you can import PyTorch: `import torch`
@@ -154,11 +154,9 @@ You can obtain an interactive session on the GPU-shared partition with 1 GPU usi
 
 For example, we used such an interactive session when we set up the environment to test that it works correctly.
 
-Note: `interact` on Bridges-2 is effectively equivalent to `srun --pty` on the SCF cluster (in fact `interact` just calls `srun --pty` with 
-
 ### Efficiently using the Bridges-2 jupyterhub
 
-Most of your computing will probably be done by submitting jobs, and most of your development/experimentation will probably happen locally or on the SCF jupyterhub (without a GPU). However, if you need to interactively experiment with a GPU, the Bridges-2 jupyterhub is a good option.
+Most of your computing will probably be done by submitting jobs, and most of your development/experimentation will probably happen locally (without a GPU). However, if you need to interactively experiment with a GPU, the Bridges-2 jupyterhub is a good option.
 
 On the [web interface](https://ondemand.bridges2.psc.edu), click "Jupyter Lab: Bridges2". Here are the parameters to set:
 
@@ -168,7 +166,7 @@ On the [web interface](https://ondemand.bridges2.psc.edu), click "Jupyter Lab: B
 - Partition: **`GPU-shared`** (not `GPU`!!! `GPU` will take a whole node and will cost 8 GPU-hours per hour that it runs. `GPU-shared` lets you get just 1 GPU.)
 - Extra Slurm Args: `--gpus=1`.
 
-Click "Launch". On the next page, wait for the server to start. It will say "Queued", then maybe "Starting", and then will say "Running". Once the server is running, click the button that says "Connect to Jupyter". A JupyterLab window will open, similar to what you would see on the SCF jupyterhub.
+Click "Launch". On the next page, wait for the server to start. It will say "Queued", then maybe "Starting", and then will say "Running". Once the server is running, click the button that says "Connect to Jupyter". A JupyterLab window will open.
 
 Once you are done working, please shut down the jupyterlab server. Two options:
 
@@ -186,7 +184,7 @@ One of the easiest ways to prevent wasting GPU resources is to follow a better d
 3. Once you are confident your code will work as you intend, somehow transfer the code to Bridges-2 (my suggestion: use a private or public github repo; push to it from your laptop, and pull from Bridges-2).
 4. Submit the job on Bridges-2.
 
-This way, most of your GPU resource usage will be for actual production runs, rather than testing or debugging. The main possible hangup will be how PyTorch transfers information between CPU and GPU, which won't be tested unless you test on SCF GPUs. But such issues should come up right in the beginning of a run, so you won't use much GPU time. Another benefit of this workflow is that you will only ever have one updated version of your code, and you won't have to deal with moving changes which you made on Bridges-2 back to your local machine.
+This way, most of your GPU resource usage will be for actual production runs, rather than testing or debugging. The main possible hangup will be how PyTorch transfers information between CPU and GPU, which won't be tested. But such issues should come up right in the beginning of a run, so you won't use much GPU time. Another benefit of this workflow is that you will only ever have one updated version of your code, and you won't have to deal with moving changes which you made on Bridges-2 back to your local machine.
 
 Some more guidelines:
 
