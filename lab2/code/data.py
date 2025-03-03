@@ -5,101 +5,77 @@ import numpy as np
 def make_data(patch_size=9):
     """
     Load the image data and create patches from it.
-    Feel free to play around with the choice of patch size.
     Args:
-        patch_size: The size of the patches to create
+        patch_size: The size of the patches to create.
     Returns:
-        images_long: A list of numpy arrays of the original images
-        patches: A list of lists of patches for each image
+        images_long: A list of numpy arrays of the original images.
+        patches: A list of lists of patches for each image.
     """
 
     # load images
-    # find all .npz files in the directory
     filepaths = glob.glob("../data/*.npz")
     images_long = []
     for fp in filepaths:
         npz_data = np.load(fp)
-        # assuming the array is stored under the first key:
         key = list(npz_data.files)[0]
         data = npz_data[key]
         if data.shape[1] == 11:
-            data = data[:,:-1]  # remove labels
+            data = data[:, :-1]  # remove labels
         images_long.append(data)
 
-    # use first column as y and second column as x
-    y = images_long[0][:, 0]
-    x = images_long[0][:, 1]
+    # Compute global min and max for x and y over all images
+    all_y = np.concatenate([img[:, 0] for img in images_long]).astype(int)
+    all_x = np.concatenate([img[:, 1] for img in images_long]).astype(int)
+    global_miny, global_maxy = all_y.min(), all_y.max()
+    global_minx, global_maxx = all_x.min(), all_x.max()
+    height = int(global_maxy - global_miny + 1)
+    width = int(global_maxx - global_minx + 1)
 
-    # calculate width and height of images
-    width = int(max(x) - min(x) + 1)
-    height = int(max(y) - min(y) + 1)
-
-    # calculate number of channels
+    # Reshape each image onto the common grid.
     nchannels = images_long[0].shape[1] - 2
-
-    # reshape each image
     images = []
     for img in images_long:
-        image = np.zeros((nchannels, int(height), int(width)))
         y = img[:, 0].astype(int)
         x = img[:, 1].astype(int)
-
-        # Compute relative coordinates
-        y_rel = y - min(y)
-        x_rel = x - min(x)
-
-        # Create a mask to filter out out-of-bounds values
-        valid_mask = (y_rel >= 0) & (y_rel < int(height)) & (x_rel >= 0) & (x_rel < int(width))
-
-        # Apply the mask
+        # Use global minimums to get relative coordinates.
+        y_rel = y - global_miny
+        x_rel = x - global_minx
+        image = np.zeros((nchannels, height, width))
+        valid_mask = (y_rel >= 0) & (y_rel < height) & (x_rel >= 0) & (x_rel < width)
         y_valid = y_rel[valid_mask]
         x_valid = x_rel[valid_mask]
-        img_valid = img[valid_mask]  # Keep only valid rows
-
-        # Fill image array
-        for i in range(nchannels):
-            image[i, y_valid, x_valid] = img_valid[:, i + 2]
-
+        img_valid = img[valid_mask]
+        for c in range(nchannels):
+            image[c, y_valid, x_valid] = img_valid[:, c + 2]
         images.append(image)
-
     print('done reshaping images')
 
-    # convert to 4d array (nimages, nchannels, height, width)
+    # Now that all images have the same shape, convert to a 4D array.
     images = np.array(images)
-
-    # for every pixel in every image, we will get a 9x9 normalized
-    # patch around it containing all channels
     pad_len = patch_size // 2
 
-    # get normalization constants for the channels
+    # Global normalization across images.
     means = np.mean(images, axis=(0, 2, 3))[:, None, None]
     stds = np.std(images, axis=(0, 2, 3))[:, None, None]
     images = (images - means) / stds
 
     patches = []
     for i in range(len(images_long)):
-        if (i%10 == 0):
+        if i % 10 == 0:
             print(f'working on image {i}')
         patches_img = []
-
-        # pad the image by mirroring across the border.
-        # Is mirroring the best choice?
+        # Pad the image by reflecting across the border.
         img_mirror = np.pad(
             images[i],
             ((0, 0), (pad_len, pad_len), (pad_len, pad_len)),
             mode="reflect",
         )
-
-        # get the coordinates of the pixels in the original image
-        ys = images_long[i][:, 0]
-        miny = min(ys)
-        xs = images_long[i][:, 1]
-        minx = min(xs)
-
-        # iterating over pixels, get the patch around each pixel.
+        # Use global min values to compute relative indices.
+        ys = images_long[i][:, 0].astype(int)
+        xs = images_long[i][:, 1].astype(int)
         for y, x in zip(ys, xs):
-            y_idx = int(y - miny + pad_len)
-            x_idx = int(x - minx + pad_len)
+            y_idx = int(y - global_miny + pad_len)
+            x_idx = int(x - global_minx + pad_len)
             patch = img_mirror[
                 :,
                 y_idx - pad_len : y_idx + pad_len + 1,
