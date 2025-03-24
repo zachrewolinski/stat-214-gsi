@@ -18,3 +18,5 @@ __pycache__
 .ipynb_checkpoints
 
 *.npz
+
+lab3/data/
