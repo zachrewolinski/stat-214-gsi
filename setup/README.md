@@ -1,4 +1,4 @@
-# Repository for Submitting Labs in STAT 214, Spring 2025
+# Repository for Submitting Labs in STAT 214, Spring 2026
 
 ## Setup
 
@@ -16,7 +16,7 @@ Once you have completed these first steps, you are then ready to create your pri
 
 1. On the GitHub website, log in and create a **private** remote repository called `stat-214`. That must be its exact name! **Do not** check the boxes to "Add .gitignore" or "Choose a license" (we will provide .gitignore). After you hit "Create repository", you will be able to see it at https://github.com/YOURUSERNAME/stat-214. Note that your repository will be empty.
 
-1. Add the GSIs (`zachrewolinski`, `austinvzane`, and `aagarwal1996`) as collaborators on your private repository so that we can access it (on https://github.com/YOURUSERNAME/stat-214, navigate to Settings -> Collaborators -> Add people).
+1. Add the GSIs (`zachrewolinski`, `anqiwang02`, `sequoiarose`, and `smrichardson`) as collaborators on your private repository so that we can access it (on https://github.com/YOURUSERNAME/stat-214, navigate to Settings -> Collaborators -> Add people).
 
 1. Open your terminal and navigate to the directory where you keep your 214 work. For example, I would do `cd grad/214` to enter my `214` directory in my `grad` folder.
 
