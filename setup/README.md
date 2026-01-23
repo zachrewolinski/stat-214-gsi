@@ -24,7 +24,7 @@ Once you have completed these first steps, you are then ready to create your pri
 
 1. If you are prompted for a username, enter your GitHub username. If you are prompted for a password, you must enter a GitHub access token (If you use your GitHub password, you will see an authentication error). If you don't have one yet, you can make an access token at https://github.com/settings/tokens/new. Feel free to set the expiration to "No expiration" (though that is not super secure...). The only box you need to check under "Select scopes" is "repo". After you create the token, make sure to copy it and save it somewhere, as you will never see it again.
 
-1. Move the `.gitignore` and `info.txt` files from `stat-214-gsi` into the base directory of your `stat-214` repository (aka, not in an inner folder). You should have already cloned the `stat-214-gsi` repository - see the last slide of the first discussion for details.
+1. Move the `.gitignore` and `info.txt` files from `stat-214-gsi/setup` into the base directory of your `stat-214` repository (aka, not in an inner folder). You should have already cloned the `stat-214-gsi` repository - see the last slide of the first discussion for details.
 
 1. Now, edit *info.txt* in your local `stat-214` repository to reflect your own information.
 
