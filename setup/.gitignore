@@ -1,6 +1,9 @@
 # Data stuff
 .DS_Store
 
+# ignore `data` directory inside any labX folder (X is integer)
+lab[0-9]*/data/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
