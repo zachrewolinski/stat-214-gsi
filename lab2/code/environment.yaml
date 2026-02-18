@@ -1,0 +1,13 @@
+name: env_214
+channels:
+  - defaults
+dependencies:
+  - python
+  - pip:
+    - numpy
+    - pandas
+    - matplotlib
+    - seaborn
+    - scikit-learn
+    - jupyterlab
+    - torch
