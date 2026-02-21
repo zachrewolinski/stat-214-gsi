@@ -1,0 +1,1 @@
+Image data are uploaded to bcourses. Please see zip file in Files > Labs > lab2 > image_data.zip
