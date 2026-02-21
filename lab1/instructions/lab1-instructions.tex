@@ -34,7 +34,7 @@ You must have a \texttt{clean.py} Python file in your \texttt{code} folder. This
 
 You also must have a \texttt{models.py} Python file in your \texttt{code} folder. I will not enforce function names in this file, since the methods you implement will not be the same, but I am expecting each of your models to be implemented in this file. The functions in \texttt{models.py} used to create these models should be included in \texttt{run.sh} (see general instructions) to recreate your results.
 
-I will be using \texttt{ruff} to assess code style. For simplicity, I will use its default setup, so no special configuration will be needed. Specifically, I will be running \texttt{ruff check . --output-format json} over your codebase, with the exact style points being a function of the number of style errors detected. You can run this command to check your style yourself, and also use \texttt{ruff check . --fix} to automatically fix many of these errors.
+I will be using \texttt{ruff} to assess code style. For simplicity, I will use its default setup, so no special configuration will be needed. Specifically, I will be running \texttt{ruff check code/clean.py code/models.py --output-format json} over your codebase, with the exact style points being a function of the number of style errors detected. You can run this command to check your style yourself, and also use \texttt{ruff check code/clean.py code/models.py --fix} to automatically fix many of these errors.
 
 \subsection*{Additional Remarks on Grading}
 
