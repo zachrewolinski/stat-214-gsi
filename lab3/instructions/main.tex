@@ -1,0 +1,249 @@
+\documentclass[letterpaper,12pt]{article}
+% reduce margins
+\usepackage[margin=1in]{geometry}
+
+% remove indent
+\setlength\parindent{0pt}
+\setlength{\parskip}{1em}
+% reduce toc spacing
+\usepackage{tocloft}
+\setlength{\cftbeforesecskip}{0.5em}
+% make toc show subsubsections
+\setcounter{tocdepth}{3}
+% remove section numbering
+\setcounter{secnumdepth}{1}
+
+% reduce section, subsection, etc spacing
+\usepackage{titlesec}
+\titlespacing*{\section}{0pt}{0\baselineskip}{0\baselineskip}
+\titlespacing*{\subsection}{0pt}{0\baselineskip}{0\baselineskip}
+\titlespacing*{\subsubsection}{0pt}{0\baselineskip}{0\baselineskip}
+
+%reduce list spacing
+\usepackage{enumitem}
+\setlist{nosep}
+
+\usepackage[hidelinks]{hyperref}
+
+\usepackage[backend=biber]{biblatex}
+\addbibresource{huthmri.bib}
+
+\usepackage{graphicx}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\title{Lab 3 - Connecting Language to fMRI reads, Stat 214, Spring 2026\vspace{-2em}}
+\date{}
+
+\begin{document}
+\maketitle
+
+These are the \textbf{final project specific} instructions. Please also see the general lab instructions in \textbf{lab-instructions.pdf}.
+
+\tableofcontents
+
+\clearpage
+\section{Submission}
+
+This lab is broken up into three sub-parts, where each sub-part will have a check-in due date. The final lab report will include your results from all three sub-parts. For the final submission, push your final code to your \texttt{stat-214 GitHub} repository by \textbf{23:59 on Friday May 8th}. Your push access will be cutoff promptly at midnight, so take care not to be late as late labs will not be accepted.
+
+\subsection{Subpart Check-Ins}
+
+There will be two sub-part check-ins due before the final report:
+\begin{enumerate}
+    \item [\textbf{3.1:}] due April 10th, 23:59
+    \item [\textbf{3.2:}] due April 24th, 23:59
+\end{enumerate}
+
+Each check-in will have a bcourses assignment. Please have everyone in your group submit the same check-in pdf. Each check-in submission should be 1-2 pages and include a summary of your results fo that sub-part, including at least one figure.
+
+\subsection{Final Report}
+\textbf{The page limit for this lab is 20 pages}. The bibliography and academic honesty sections don't count towards this limit.
+
+\textbf{Follow the general lab instructions in stat-214-gsi/discussion/week1/lab-instructions.pdf for more details.} Please do not try to make your project fit the requirements at the last minute!
+
+I have not provided a template as a guideline for the writeup. You should have clean code that would be clear to reproduce and a report structure that is compelling to read and roughly follows the conceptual progression of previous labs. The final report will should be in your repository by \textbf{23:59 on Friday May 8th}.
+
+\subsection{Special coding instructions}
+For any ridge regression model you train, please save the trained model in your results directory. It should be a .pkl file.
+
+\section{Academic honesty and teamwork}
+
+\subsection{Academic honesty statement}
+
+You can use your statement from lab1 or lab2.
+
+\clearpage
+\subsection{Collaboration policy}
+
+\textbf{Within-group:} In a file named \texttt{collaboration.txt} in your \texttt{report} directory, you must include a statement detailing the contributions of each student, which indicates who worked on what. After the labs are submitted, I will also ask you to privately review your group members' contributions.
+
+\textbf{With other people:} You are welcome to discuss ideas with the GSIs. Please avoid discussing specific ideas with other groups, as I don't want to receive 5 of the same lab. If you do consult with students in other groups, you must acknowledge these students in your lab report.
+
+\subsection{LLM usage policy}
+
+You are allowed to use LLMs (ChatGPT, GitHub Copilot, etc.) to \textit{assist} in this lab, but are not allowed to use it for more than creating visualizations or helping correct grammar in the report. If we have reason to believe an LLM wrote a significant portion of your code (more than 5\%) without your editing or iteration, or any section of your report word-for-word, this will constitute an honor code violation.
+
+\section{Lab 3 Overview}
+\textbf{Goal} The final project focuses on predicting blood-oxygen level across brain voxels 1 via an FMRI as subjects listen to various podcasts. Specifically, the goal is to create embeddings from the text of the podcasts to predict voxels. Overall your tasks will include:
+
+\begin{itemize}
+\item Using NLP techniques to extract text embeddings including using/fine-tuning pre-trained large scale LLMs.
+\item Training a linear model to predict voxels from the text embeddings
+\item Interpreting results via different techniques
+\end{itemize}
+
+\textbf{Scientific Motivation} A key aspect of intelligence is the ability of our brains to process rich, complicated language. Accurately predicting how the brain responds to textual stimuli implies that we have a model that could be used to understand how the brain processes language. Further, embeddings from this model can be used to understand representations in the brain. For example, these embeddings can be used to derive insights about how different parts of the brain function to process language. As a result, scientists have dedicated significant effort to measuring brain function via FMRIs. This lab focuses on experiments conduced by Alexander Huth and his lab at UT Austin.\\
+
+\clearpage
+
+\subsection{Data}
+We have data from two subjects listening to stories measured by the Huth Lab at UT Austin \cite{NEURIPS2018_f471223d}.The data for each subject consists of whole-brain blood-oxygen dependent (BOLD) signals measured at various points across the podcast. That is, for each subject-story pair, we have measurements $Y \in  \mathbf{R}(T'\times V)$ , where $T'$ represents the number of FMRI measurements, and $V$ is the number of voxels.
+For each subject-story pair, their data can be found on the dropbox link below. Note that these files are really big, $\approx$ 20GB each. Because of this, the data is already loaded on Bridges2 and can be accessed at the path 
+\url{"/ocean/projects/mth250011p/shared/215a/final_project/data"}. We also have the raw text for each story on the link above which we will use to generate our embeddings to predict the matrix $Y$ .\\
+
+Access data at the following link: \url{https://www.dropbox.com/scl/fo/6taux72r36h9wgv0mza8k/AC04j1WSCT96FIMN2bNtbOs?rlkey=4wpvdb61n3ppl307q77czwl7j&st=j1dyyoic&dl=0}
+
+\subsection{Coding}
+We provide code to help you process some of the FMRI data. You will find a ridge utils folder and under code/preprocessing.py, you will find multiple functions that you will use below to process the data. You will also find a very simple code skeleton for BERT Fine-tuning.
+
+\section{Instructions}
+
+\subsection{Data Preprocessing}
+For any of these embeddings, you will find that the embedding dimension is not likely to match the measurement dimensions. Hence you will have to downsample from your embeddings (see \cite{NEURIPS2018_f471223d} for details) and for that you can use the provided \textbf{downsample\_word\_vectors} from the \textbf{code/preprocessing.py} script.\\
+Further, trim the 5 seconds and last 10 seconds of the output data to better match voxel measurements.\\
+Finally you should use \textbf{make\_delayed} from the \textbf{code/preprocessing.py} to insert delays from 1 through 4 seconds inclusively - explain what this does and why this might be useful.
+
+\subsection{Lab 3.1}
+\subsubsection{Part 1: Generate Embeddings}
+An embedding refers to a numerical vector representation of text. This step is essential to convert our raw text into something a predictive model can use. Before we try embedding, for each subject, split the stories into a training and test set. That is, you will need to fit and evaluate a model \textit{per} subject.
+
+\begin{enumerate}
+    \item Provided the list of stories, generate embedding vectors via bag-of-words. Notice that the dimensions of the dimensions of the resulting matrix do not match up with the response matrix. We will have to down-sample it (see [1] for details) to match dimensions. Explain what is being done here.
+    \item Call \textbf{downsample\_word\_vectors} from the file \texttt{code/preprocessing.py} to get the dimensions to match. Further, trim the first 5 seconds and last 10 seconds of the output.
+    \item Create lagged versions of the features using \textbf{make\_delayed} from \texttt{code/preprocessing.py} with delays ranging form [1, 4] inclusive. Explain what this does.
+    \item Repeat the process above for 2 other pre-trained embedding methods: Word2Vec and GloVe. You will have to find these pre-trained embedding methods online, and use them. The processed embeddings resulting from these steps will serve as the features (X matrix) in our regression.
+    \item Describe potential benefits of using pre-trained embeddings.
+\end{enumerate}
+
+\subsubsection{Part 2: Modeling \& Evaluation}
+
+\vspace{1em}
+\noindent
+We will now fit a linear model to each of the embeddings you generated in the previous step.
+\begin{itemize}
+    \item Fit a ridge regression model, and report the mean correlation coefficient (CC) for different embeddings
+    \item Devise a scheme to cross validate the different models and select the best performing linear regressor. Detail your procedure and report the mean test CC, median test CC, top 1 percentile CC. and top 5 percentile CC.
+    \item For the best embedding, perform a more detailed evaluation by examining the distribution of the CC across voxels. Plot the distribution. What do you notice?
+    \item Does this model perform well across all voxels? What does this imply scientifically? What is a reasonable interpretation criterion for interpreting voxels according to PCS?
+    \item Perform a stability analysis, e.g., examine performance across various test stories, or across subjects.
+\end{itemize}
+
+\clearpage
+\subsection{Lab 3.2}
+In Lab 3.1, we used bag-of-word and pre-trained embeddings to predict BOLD scores for voxels. In this lab, you will repeat the analysis from part 1 except that you two different embedding models: first, you will use a pre-trained BERT model, and second, you will use a fine-tuned BERT model. Then, you will fit a ridge regression model to predict voxels just as you did in 3.1.
+
+% Useful links for pre-training encoders:
+% \begin{enumerate}
+%     \item [1.] \url{https://web.stanford.edu/~jurafsky/slp3/11.pdf}
+%     \item [2.] \url{https://www.youtube.com/watch?v=kCc8FmEb1nY&t=1223s}
+% \end{enumerate}
+
+% We have also provided some basic code for pre-training your encoder in the repository. Specifically, we provide the following three files:
+% \begin{enumerate}
+%     \item [1.]\textbf{data.py} for loading and tokenizing your data. In this lab, we do not train our own tokenizer but use a pre-trained one. Specifically, we use "bert-base-uncased". An example of loading and tokenizing your data is provided in data.py.
+%     \item[2.] encoder.py consists of the general architecture for your encoder.
+%     \item[3.] train encoder.py Script to train the encoder that you need to implement.
+% \end{enumerate}
+
+\subsubsection{Part 1: Pre-trained and Fine-tuned BERT}
+
+\begin{enumerate}
+    \item Using the following pre-trained BERT model \href{https://huggingface.co/google-bert/bert-base-uncased}{https://huggingface.co/google-bert/bert-base-uncased}, fit a ridge model on the embeddings as you did in 3.1 to predict across voxels.
+    \item Next, fine-tune this model for this task.
+    \item Investigate a parameter-efficient approach to fine-tuning this model such as Low-rank adaptation (LORA). Please refer to the following link as to how to to use LORA with Huggingface \href{https://huggingface.co/docs/diffusers/en/training/lora}{https://huggingface.co/docs/diffusers/en/training/lora}
+    \item Compare the performance of the fine-tuned model to the pre-trained model and the ones you derived in 3.1 and 3.2. Specifically, perform a detailed analysis as in earlier labs to compare the performance of the embeddings across voxels.
+\end{enumerate}
+
+% \begin{enumerate}
+%     \item Implement the Encoder model in \texttt{encoder.py}
+%     \item Implement masked-language model training for the Encoder model in \texttt{train\_encoder.py}
+%     \item Train the encoder, and plot training/validation loss curves. Do so for multiple hyper-parameters, and report the results for your tuning. What were the hyper-parameters you chose and why?
+% \end{enumerate}
+
+\subsubsection{Part 2: Modeling \& Evaluation }
+
+We will now fit a linear model to each of the embeddings you generated in the previous step as you did in 3.1.
+
+\begin{itemize}
+    \item Repeat the analysis you performed in 3.1 and fit a ridge model to predict across voxels.
+    \item Does this model perform well across all voxels? What does this imply scientifically? What is a reasonable interpretation criterion for interpreting voxels according to PCS?
+    \item Compare your results to embeddings you tried in lab 3.1. Perform a detailed analysis to compare the performance of embeddings. For example, do different embedding methods perform equally well across the voxels?
+\end{itemize}
+
+\clearpage
+\subsection{Lab 3.3}
+
+The final portion of the lab will focus on interpreting and evaluating your results and writing them up in a comprehensive report. 
+
+\subsubsection{Part 1: Interpretation}
+Given the (fine-tuned) BERT model from 3.2, we will now interpret the model by investigating the word importance for various voxels. Specifically, do the following.
+
+\begin{itemize}
+    \item For a given test story, identify the voxels where the model performs well.
+    \item For these voxels, run SHAP (\href{https://shap.readthedocs.io/en/latest/}{https://shap.readthedocs.io/en/latest/}) and LIME to (\href{https://github.com/marcotcr/lime}{https://github.com/marcotcr/lime}) to identify influential words that strong affect the response. Why do we only do this for the voxels that we perform well for? Think about the ``P'' in PCS.
+    \item Compare the words discovered by SHAP and LIME, and visualize them. Do these words make intuitive sense to you? How are they different? How are the words discovered different across voxels?
+    \item Repeat this analysis for another test-story.
+\end{itemize}
+
+\subsubsection{Part 2: Final Report}
+Now it is time to synthesize your analysis into one report. In addition to the standard introduction, methods, results, and conclusions, your report should include:
+
+\begin{itemize}
+    \item The performance over the four different word embedding models: Word2Vec, GloVe, pre-trained BERT, and fine-tuned BERT. Feel free to explore any additional models too.
+    \item The performance of the voxel prediction models across different embedding inputs and different prediction models. 
+    \item A section on the interpretability of your fine-tuned BERT model.
+    \item A section on stability of one of your judgment calls (whether that be data cleaning/processing, hyper parameters, models, regularization, visualization choices or other). Thoughtfully and creatively choose a stability study that is not necessarily common place but would make you more confident in your final model in the context of your ultimate goal.
+\end{itemize}
+% \subsection{Find Word Embeddings}
+% For this project you will have to find and use existing word embeddings from online. You must use four different embeddings. We recommend using Word2Vec, GloVe, a pre-trained BERT and fine-tuned BERT model (for this one you should use: https://huggingface.co/google-bert/bert-base-uncased if possible). Though BERT must be two of your embeddings, you are free to choose one different than Word2Vec and GloVe for your other two embeddings. In \textbf{code/data.py} you will see example code for extracting token embeddings from text.
+
+% \textbf{BERT} For one BERT embedding, simply use the pre-trained model. For the fine-tuned, you are free to use your own techniques. Our baseline expectation/one good avenue would be to explore parameter-efficient fine-tuning methods like LORA (Low-Rank Adaptation). Please refer to the following link as to how to to use LORA with Huggingface \url{https://huggingface.com/docs/diffusers/en/training/lora}. In \textbf{code/fine\_tune\_bert.py} you will see some skeleton architecture to suggest possible starting points as you work to fine-tune the model.
+
+% \subsection{Data Preprocessing}
+% For any of these embeddings, you will find that the embedding dimension is not likely to match the measurement dimensions. Hence you will have to downsample from your embeddings (see \cite{NEURIPS2018_f471223d} for details) and for that you can use the provided \textbf{downsample\_word\_vectors} from the \textbf{code/preprocessing.py} script.\\
+% Further, trim the 5 seconds and last 10 seconds of the output data to better match voxel measurements.\\
+% Finally you should use \textbf{make\_delayed} from the \textbf{code/preprocessing.py} to insert delays from 1 through 4 seconds inclusively - explain what this does and why this might be useful.
+
+% \subsection{Model and Evaluation Metrics}
+% Now fit a linear model to each of the embeddings you generated in the previous step.
+% \begin{itemize}
+% \item Fit a ridge regression model, and report the mean correlation coefficient (CC) for different embeddings
+% \item Devise a scheme to cross validate the different models and select the best performing linear regressor. Detail your procedure and report the mean test CC, median test CC, top 1 percentile CC and top 5 percentile CC at least. Look for other creative domain specific ways to evaluate performance.
+% \item For the best embedding, perform a more detailed evaluation by examining the distribution of the CC across voxels. Plot the distribution. What do you notice?
+% \end{itemize}
+
+% \subsection{Interpretation}
+% Do a deep dive interpretation of your model in specific use-cases for the (fine-tuned) BERT model:
+% \begin{itemize}
+% \item For a given test story, identify the voxels where the model performs well.
+% \item For these voxels, run SHAP (https://shap.readthedocs.io/en/latest/) and LIME to (https:
+% //github.com/marcotcr/lime) to identify influential words that strong affect the response. Why
+% do we only do this for the voxels that we perform well for? Think about the “P” in PCS.
+% \item Compare the words discovered by SHAP and LIME, and visualize them. Do these words make intuitive sense to you? How are they different? How are the words discovered different across voxels?
+% \item Repeat this analysis for another test-story.
+% \end{itemize}
+
+% \subsection{Stability Check}
+% Stability concerns should be kept in mind throughout the analysis. However, explicitly make a section that is dedicated to analyzing in detail the stability of one of your choices or judgement calls (whether that be data cleaning/processing, hyper parameters, models, regularization, visualization choices or other). Thoughtfully and creatively choose a stability study that is not necessarily common place but would make you more confident in your final model in the context of your ultimate goal.
+
+
+\section{Note on Grading}
+As the final project is a group project, being a good collaborator on the lab will be taken into account for each individual’s grade on the final lab (just as for lab 2). After the lab is submitted, we will send a Google form for each group member to evaluate the collaboration received from other members of their group. The final score for each student will be a combination of the student’s collaboration score from their group mates, and the overall project score.\\
+
+
+\printbibliography
+
+\end{document}
+
