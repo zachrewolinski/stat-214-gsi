@@ -112,7 +112,6 @@ We provide code to help you process some of the FMRI data. You will find a ridge
 
 \subsection{Data Preprocessing}
 For any of these embeddings, you will find that the embedding dimension is not likely to match the measurement dimensions. Hence you will have to downsample from your embeddings (see \cite{NEURIPS2018_f471223d} for details) and for that you can use the provided \textbf{downsample\_word\_vectors} from the \textbf{code/preprocessing.py} script.\\
-Further, trim the 5 seconds and last 10 seconds of the output data to better match voxel measurements.\\
 Finally you should use \textbf{make\_delayed} from the \textbf{code/preprocessing.py} to insert delays from 1 through 4 seconds inclusively - explain what this does and why this might be useful.
 
 \subsection{Lab 3.1}
